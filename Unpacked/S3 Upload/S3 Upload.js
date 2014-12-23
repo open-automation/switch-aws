@@ -33,11 +33,21 @@ function jobArrived( s : Switch, job : Job )
 	
 	// Invoke node
 	Process.execute(cmd);
+	var output = Process.stdout;
+	
+	// Parse the response as JSON
+	var objJSON = eval("(function(){return " + output + ";})()");
 
 	// Log some more stuff
 	if(debug == 'Yes'){
 		s.log(logLevel, "cmd: "+cmd);
-		s.log(logLevel, "output: "+Process.stdout);
+		s.log(logLevel, "output: "+output);
+		s.log(logLevel, "objJSON.Location: "+objJSON.Location);
 	}
 
+	// Write to private data
+	job.setPrivateData(responseUrlPdKey, objJSON.Location);
+	
+	// Finish
+	job.sendToData(1, job.getPath());
 }
