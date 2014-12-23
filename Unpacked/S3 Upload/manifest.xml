@@ -1,0 +1,12 @@
+<Manifest>
+    <ScripterInstanceName>S3 Upload</ScripterInstanceName>
+    <ScriptPackageFormatVersion>1.0</ScriptPackageFormatVersion>
+    <ScripterPassword></ScripterPassword>
+    <ScriptDeclarationFile>S3 Upload.xml</ScriptDeclarationFile>
+    <ScriptProgramFiles>
+        <ScriptProgramFile ScriptLanguage="JavaScript">S3 Upload.js</ScriptProgramFile>
+    </ScriptProgramFiles>
+    <ScriptIconFile>s3_icon.png</ScriptIconFile>
+    <AppleBinary></AppleBinary>
+    <LocalizationItems/>
+</Manifest>

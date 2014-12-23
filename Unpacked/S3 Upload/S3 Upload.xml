@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Object>
+    <ElementFields>
+        <Name Type="string" Editor="hide">S3 Upload</Name>
+        <DisplayName Type="string" Editor="hide"/>
+        <Version Type="number" Editor="hide">1</Version>
+        <Keywords Type="string" Editor="hide"/>
+        <Tooltip Type="string" Editor="hide"/>
+        <IncomingConnections RequireAtLeastOne="Yes" Editor="hide">Yes</IncomingConnections>
+        <OutgoingConnections RequireAtLeastOne="Yes" DetailedInfo="" Editor="hide">Unlimited</OutgoingConnections>
+        <ConnectionType Editor="hide">TrafficLight</ConnectionType>
+        <ScriptFunctions Editor="hide">jobArrived</ScriptFunctions>
+        <ExecutionMode Editor="hide">Serialized</ExecutionMode>
+        <NumberOfSlots Editor="hide">Default</NumberOfSlots>
+        <ExecutionGroup Editor="hide"/>
+        <PerformanceTuning Editor="hide">No</PerformanceTuning>
+        <IdleAfterJob Editor="hide">0</IdleAfterJob>
+        <PositionInElementPane Editor="hide">Configurators</PositionInElementPane>
+        <SubcategoryInElementPane Editor="hide">&lt;ValueDescription Type="stringlist">&lt;Value>Custom&lt;/Value>&lt;/ValueDescription></SubcategoryInElementPane>
+        <DispositionInElementPane Type="number" Editor="hide"/>
+        <Description Type="string" Editor="hide"/>
+        <Compatibility Type="string" Editor="hide"/>
+        <SupportInfo Type="string" Editor="hide"/>
+        <AppDiscovery Type="string" Editor="hide"/>
+        <Connections Type="string" Editor="hide"/>
+        <SwitchModule Type="string" Editor="hide"/>
+        <ObsoleteProperties Type="string" Editor="hide"/>
+        <ObsoleteConnectionProperties Type="string" Editor="hide"/>
+        <DestinationBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></DestinationBucket>
+        <ScriptPath Validation="Standard" LocalizedTagName="Script Path" Subtype="inline" Default="" Tooltip="Path to s3_upload.js" DetailedInfo="" Type="string" Editor="inline;choosefile"></ScriptPath>
+        <ResponseUrlPdKey Validation="Standard" LocalizedTagName="Response URL Private Data Key" Subtype="inline" Default="S3UploadLocation" Tooltip="Private data key which can be used to retreive the URL from S3." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">S3UploadLocation</ResponseUrlPdKey>
+        <Region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">us-east-1</Region>
+        <AccessKey Validation="None" LocalizedTagName="AWS Access Key ID" Subtype="inline" Default="" Tooltip="If not specified in envirenmental variables" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></AccessKey>
+        <SecretAccessKey Validation="None" LocalizedTagName="AWS Secret Access Key" Subtype="inline" Default="" Tooltip="If not specified in envirenmental variables" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></SecretAccessKey>
+        <Debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</Debug>
+    </ElementFields>
+    <ConnectionFields>
+        <Success AvailableFor="Data" LocalizedTagName="Success out" Default="Yes" Type="bool" Editor="inline">Yes</Success>
+        <Error AvailableFor="Data" LocalizedTagName="Error out" Default="Yes" Type="bool" Editor="inline">Yes</Error>
+    </ConnectionFields>
+</Object>
