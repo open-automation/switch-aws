@@ -6,6 +6,4 @@ AWS scripts for Switch with the help of node. The goal of this project is to mak
 - Node.js
 
 #### Todo
-- Add optional method for using AWS CLI instead
-- More methods
-- Response JSON should be added as a metadata dataset
+See the [issues page](https://github.com/dominickp/SwitchAWS/issues)
