@@ -26,12 +26,15 @@
         <SwitchModule Type="string" Editor="hide"/>
         <ObsoleteProperties Type="string" Editor="hide"/>
         <ObsoleteConnectionProperties Type="string" Editor="hide"/>
+        <RemoveSwitchId Validation="Standard" LocalizedTagName="Remove Switch ID" Subtype="inline" Default="Yes" Tooltip="Removes the 5 character Switch identifier" DetailedInfo="" Type="bool" Editor="inline">Yes</RemoveSwitchId>
         <DestinationBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></DestinationBucket>
-        <ScriptPath Validation="Standard" LocalizedTagName="Script Path" Subtype="inline" Default="" Tooltip="Path to s3_upload.js" DetailedInfo="" Type="string" Editor="inline;choosefile"></ScriptPath>
-        <ResponseUrlPdKey Validation="Standard" LocalizedTagName="Response URL Private Data Key" Subtype="inline" Default="S3UploadLocation" Tooltip="Private data key which can be used to retreive the URL from S3." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">S3UploadLocation</ResponseUrlPdKey>
+        <ResponseUrlPdKey Validation="Standard" LocalizedTagName="S3 Link Private Data Key" Subtype="inline" Default="S3UploadLocation" Tooltip="Private data key which can be used to retreive the URL from S3." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">S3UploadLocation</ResponseUrlPdKey>
         <Region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">us-east-1</Region>
-        <AccessKey Validation="None" LocalizedTagName="AWS Access Key ID" Subtype="inline" Default="" Tooltip="If not specified in envirenmental variables" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></AccessKey>
-        <SecretAccessKey Validation="None" LocalizedTagName="AWS Secret Access Key" Subtype="inline" Default="" Tooltip="If not specified in envirenmental variables" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></SecretAccessKey>
+        <NamedProfile Validation="None" LocalizedTagName="Named Profile" Subtype="inline" Default="" Tooltip="Specify another profile key for using AWS credentials other than the default user" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></NamedProfile>
+        <ACL Validation="Standard" LocalizedTagName="ACL" Subtype="inline" Default="private" Tooltip="Sets the ACl for the object when the command is performed" DetailedInfo="" Type="enum:private;public-read;public-read-write;authenticated-read;bucket-owner-read;bucket-owner-full-control;log-delivery-write" Editor="inline;sltextwithvar">private</ACL>
+        <NoGuessMimeType Validation="Standard" LocalizedTagName="Don't Guess Mime Type" Subtype="inline" Default="false" Tooltip="Do not try to guess the mime type for uploaded files. By default the mime type of a file is guessed when it is uploaded." DetailedInfo="" Type="enum:true;false" Editor="inline;sltextwithvar">false</NoGuessMimeType>
+        <SSE Validation="Standard" LocalizedTagName="Enable Server Side Encryption" Subtype="inline" Default="true" Tooltip="Enable Server Side Encryption of the object in S3" DetailedInfo="" Type="enum:true;false" Editor="inline;sltextwithvar">true</SSE>
+        <StorageClass Validation="Standard" LocalizedTagName="Storage Class" Subtype="inline" Default="" Tooltip="The type of storage to use for the object." DetailedInfo="" Type="enum:STANDARD;REDUCED_REDUNDANCY" Editor="inline;sltextwithvar"></StorageClass>
         <Debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</Debug>
     </ElementFields>
     <ConnectionFields>
