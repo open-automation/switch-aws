@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Object>
+    <ElementFields>
+        <Name Type="string" Editor="hide">S3 Download</Name>
+        <DisplayName Type="string" Editor="hide"/>
+        <Version Type="number" Editor="hide">1</Version>
+        <Keywords Type="string" Editor="hide"/>
+        <Tooltip Type="string" Editor="hide"/>
+        <IncomingConnections RequireAtLeastOne="Yes" Editor="hide">Yes</IncomingConnections>
+        <OutgoingConnections RequireAtLeastOne="Yes" DetailedInfo="" Editor="hide">Unlimited</OutgoingConnections>
+        <ConnectionType Editor="hide">Move</ConnectionType>
+        <ScriptFunctions Editor="hide">timerFired</ScriptFunctions>
+        <ExecutionMode Editor="hide">Serialized</ExecutionMode>
+        <NumberOfSlots Editor="hide">Default</NumberOfSlots>
+        <ExecutionGroup Editor="hide"/>
+        <PerformanceTuning Editor="hide">No</PerformanceTuning>
+        <IdleAfterJob Editor="hide">0</IdleAfterJob>
+        <PositionInElementPane Editor="hide">Configurators</PositionInElementPane>
+        <SubcategoryInElementPane Editor="hide">&lt;ValueDescription Type="stringlist">&lt;Value>Custom&lt;/Value>&lt;/ValueDescription></SubcategoryInElementPane>
+        <DispositionInElementPane Type="number" Editor="hide"/>
+        <Description Type="string" Editor="hide"/>
+        <Compatibility Type="string" Editor="hide"/>
+        <SupportInfo Type="string" Editor="hide"/>
+        <AppDiscovery Type="string" Editor="hide"/>
+        <Connections Type="string" Editor="hide"/>
+        <SwitchModule Type="string" Editor="hide"/>
+        <ObsoleteProperties Type="string" Editor="hide"/>
+        <ObsoleteConnectionProperties Type="string" Editor="hide"/>
+        <targetBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></targetBucket>
+        <namedProfile Validation="None" LocalizedTagName="Named Profile" Subtype="inline" Default="" Tooltip="Specify another profile key for using AWS credentials other than the default user" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></namedProfile>
+        <region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">us-east-1</region>
+        <leaveOriginals Validation="Standard" LocalizedTagName="Leave originals in bucket" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</leaveOriginals>
+        <checkIntervalMinutes Validation="Standard" LocalizedTagName="Check every (minutes)" Subtype="inline" Default="" Tooltip="" DetailedInfo="" Type="number" Editor="inline;sltextwithvar"></checkIntervalMinutes>
+        <debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</debug>
+    </ElementFields>
+    <ConnectionFields/>
+</Object>
