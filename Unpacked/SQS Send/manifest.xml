@@ -1,0 +1,12 @@
+<Manifest>
+    <ScripterInstanceName>SQS Send</ScripterInstanceName>
+    <ScriptPackageFormatVersion>1.0</ScriptPackageFormatVersion>
+    <ScripterPassword></ScripterPassword>
+    <ScriptDeclarationFile>SQS Send.xml</ScriptDeclarationFile>
+    <ScriptProgramFiles>
+        <ScriptProgramFile ScriptLanguage="JavaScript">SQS Send.js</ScriptProgramFile>
+    </ScriptProgramFiles>
+    <ScriptIconFile>Untitled-1.png</ScriptIconFile>
+    <AppleBinary></AppleBinary>
+    <LocalizationItems/>
+</Manifest>

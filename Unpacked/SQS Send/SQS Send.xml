@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Object>
+    <ElementFields>
+        <Name Type="string" Editor="hide">SQS Send</Name>
+        <DisplayName Type="string" Editor="hide"/>
+        <Version Type="number" Editor="hide">1</Version>
+        <Keywords Type="string" Editor="hide"/>
+        <Tooltip Type="string" Editor="hide"/>
+        <IncomingConnections RequireAtLeastOne="Yes" Editor="hide">Yes</IncomingConnections>
+        <OutgoingConnections RequireAtLeastOne="Yes" DetailedInfo="" Editor="hide">Unlimited</OutgoingConnections>
+        <ConnectionType Editor="hide">Move</ConnectionType>
+        <ScriptFunctions Editor="hide">jobArrived</ScriptFunctions>
+        <ExecutionMode Editor="hide">Serialized</ExecutionMode>
+        <NumberOfSlots Editor="hide">Default</NumberOfSlots>
+        <ExecutionGroup Editor="hide"/>
+        <PerformanceTuning Editor="hide">No</PerformanceTuning>
+        <IdleAfterJob Editor="hide">0</IdleAfterJob>
+        <PositionInElementPane Editor="hide">Configurators</PositionInElementPane>
+        <SubcategoryInElementPane Editor="hide">&lt;ValueDescription Type="stringlist">&lt;Value>Custom&lt;/Value>&lt;/ValueDescription></SubcategoryInElementPane>
+        <DispositionInElementPane Type="number" Editor="hide"/>
+        <Description Type="string" Editor="hide"/>
+        <Compatibility Type="string" Editor="hide"/>
+        <SupportInfo Type="string" Editor="hide"/>
+        <AppDiscovery Type="string" Editor="hide"/>
+        <Connections Type="string" Editor="hide"/>
+        <SwitchModule Type="string" Editor="hide"/>
+        <ObsoleteProperties Type="string" Editor="hide"/>
+        <ObsoleteConnectionProperties Type="string" Editor="hide"/>
+        <messageIdPdKey Validation="Standard" LocalizedTagName="Response Private Data Key" Subtype="inline" Default="SqsSendMessageId" Tooltip="Private data key which of the response MessageId" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">SqsSendMessageId</messageIdPdKey>
+        <queueUrl Validation="Standard" LocalizedTagName="Queue URL" Subtype="inline" Default="" Tooltip="The URL of the Amazon SQS queue to take action on." DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></queueUrl>
+        <messageBody Validation="None" LocalizedTagName="Message Body" Subtype="inline" Default="" Tooltip="The message to send. message-body maximum 256 KB in size. &#xa;&#xa;Note:&#xa;The following list shows the characters (in Unicode) allowed in your message, according to the W3C XML specification. For more information, go to http://www.w3.org/TR/REC-xml/#charsets If you send any characters not included in the list, your request will be rejected.&#xa;#x9 | #xA | #xD | [#x20 to #xD7FF] | [#xE000 to #xFFFD] | [#x10000 to #x10FFFF]" DetailedInfo="" Type="string" Editor="inline;sltextwithvar;mltextwithvar"></messageBody>
+        <delaySeconds Validation="None" LocalizedTagName="Delay (seconds)" Subtype="inline" Default="" Tooltip="The number of seconds (0 to 900 - 15 minutes) to delay a specific message. Messages with a positive DelaySeconds value become available for processing after the delay time is finished. If you don't specify a value, the default value for the queue applies." DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></delaySeconds>
+        <debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</debug>
+    </ElementFields>
+    <ConnectionFields/>
+</Object>
