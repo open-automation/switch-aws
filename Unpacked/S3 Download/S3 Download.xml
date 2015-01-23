@@ -6,7 +6,7 @@
         <Version Type="number" Editor="hide">1</Version>
         <Keywords Type="string" Editor="hide"/>
         <Tooltip Type="string" Editor="hide"/>
-        <IncomingConnections RequireAtLeastOne="Yes" Editor="hide">Yes</IncomingConnections>
+        <IncomingConnections Editor="hide">No</IncomingConnections>
         <OutgoingConnections RequireAtLeastOne="Yes" DetailedInfo="" Editor="hide">Unlimited</OutgoingConnections>
         <ConnectionType Editor="hide">Move</ConnectionType>
         <ScriptFunctions Editor="hide">timerFired</ScriptFunctions>

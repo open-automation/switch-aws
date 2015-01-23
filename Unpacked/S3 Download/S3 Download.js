@@ -1,5 +1,3 @@
-// Is invoked at regular intervals regardless of whether a new job arrived or not.
-// The interval can be modified with s.setTimerInterval().
 function timerFired( s : Switch )
 {
 	// Get flow element properties
@@ -13,6 +11,9 @@ function timerFired( s : Switch )
 	
 	// Set the log level
 	var logLevel = 2;
+	
+	// Keep track of if Python needed to be called explicitely
+	var requireExplicitPython = false;
 	
 	// Set the timerInterval on start
 	if (s.getTimerInterval() == 0){
@@ -34,16 +35,46 @@ function timerFired( s : Switch )
 		// Booleans
 		return cmd;
 	}
+	
+	// Function for explicitly calling Python
+	var addPython = function(cmd, requireExplicitPython)
+	{
+		if(requireExplicitPython){
+			fixedCmd = 'python /usr/local/bin/'+cmd;
+			return fixedCmd;
+		} else {
+			return cmd;		
+		}
+	}
 		
 	// Function to see if AWS CLI is installed
 	var verifyAwsCli = function()
 	{
-		Process.execute("aws --version");
-		var awsVersionResponse = Process.stderr;
-		if(debug == 'Yes') s.log(logLevel, "aws version response: "+awsVersionResponse);
-		if(!awsVersionResponse){
-			s.log(3, "AWS CLI does not appear to be installed");
-			return false;
+		cmd = "aws --version";
+		Process.execute(cmd);
+		var awsVersionError = Process.stderr;
+		var awsVersionResponse = Process.stdout;
+		if(debug == 'Yes'){
+			s.log(logLevel, "aws version response: "+awsVersionResponse);
+			s.log(logLevel, "aws version error: "+awsVersionError);
+		}
+		if(!awsVersionError){
+			// Try with explicit Python
+			Process.execute(addPython(cmd, true));
+			awsVersionError = Process.stderr;
+			awsVersionResponse = Process.stdout;
+			if(debug == 'Yes'){
+				s.log(logLevel, "aws version response: "+awsVersionResponse);
+				s.log(logLevel, "aws version error: "+awsVersionError);
+			}
+			if(!awsVersionError){
+				s.log(3, "AWS CLI does not appear to be installed");
+				return false;
+			} else {
+				// Set that explicit Python needed
+				requireExplicitPython = true;
+				return true;
+			}
 		} else {
 			return true;
 		}
@@ -52,7 +83,7 @@ function timerFired( s : Switch )
 	// Function to see if an S3 bucket exists and is accessible
 	var verifyS3Bucket = function(bucketName)
 	{
-		Process.execute("aws s3api head-bucket --bucket "+bucketName);
+		Process.execute(addPython("aws s3api head-bucket --bucket "+bucketName, requireExplicitPython));
 		var awsHeadBucketResponse = Process.stderr;
 		if(awsHeadBucketResponse){
 			s.log(3, awsHeadBucketResponse);
@@ -67,7 +98,7 @@ function timerFired( s : Switch )
 	var listS3Objects = function(bucketName)
 	{
 		// Get list of S3 objects
-		Process.execute(addOptionalParameters("aws s3api list-objects --bucket "+targetBucket+" --output json"));
+		Process.execute(addOptionalParameters(addPython("aws s3api list-objects --bucket "+targetBucket+" --output json", requireExplicitPython)));
 		var listObjectsResponse = Process.stdout;
 		// Evaluate response
 		var parsedObject = eval("(" + listObjectsResponse + ")");
@@ -91,7 +122,7 @@ function timerFired( s : Switch )
 			fn = job.createPathWithName(key, false);
 			
 			// Invoke AWS CLI
-			Process.execute(addOptionalParameters("aws s3api get-object --bucket "+targetBucket+" --key "+key+" "+fn+" --output json"));
+			Process.execute(addOptionalParameters(addPython("aws s3api get-object --bucket "+targetBucket+" --key "+key+" \""+fn+"\" --output json", requireExplicitPython)));
 			downloadError = Process.stderr;
 			
 			// Evaluate response
@@ -105,7 +136,7 @@ function timerFired( s : Switch )
 				// Delete object
 				if(leaveOriginals == 'No'){
 					// Invoke
-					Process.execute(addOptionalParameters("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json"));
+					Process.execute(addOptionalParameters(addPython("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json", requireExplicitPython)));
 					deleteError = Process.stderr;
 					deleteResponse = Process.stdout;
 					// Log some stuff

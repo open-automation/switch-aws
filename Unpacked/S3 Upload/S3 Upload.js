@@ -14,6 +14,9 @@ function jobArrived( s : Switch, job : Job )
 	// Set the log level
 	var logLevel = 2;
 	
+	// Keep track of if Python needed to be called explicitely
+	var requireExplicitPython = false;
+	
 	// Log some stuff
 	if(debug == 'Yes'){
 		s.log(logLevel, "destinationBucket: "+destinationBucket);
@@ -33,16 +36,42 @@ function jobArrived( s : Switch, job : Job )
 		// Booleans
 		return cmd;
 	}
+		
+	// Function for explicitly calling Python
+	var addPython = function(cmd, requireExplicitPython)
+	{
+		if(requireExplicitPython){
+			fixedCmd = 'python /usr/local/bin/'+cmd;
+			return fixedCmd;
+		} else {
+			return cmd;		
+		}
+	}
 	
 	// Function to see if AWS CLI is installed
 	var verifyAwsCli = function()
 	{
-		Process.execute("aws --version");
-		var awsVersionResponse = Process.stderr;
-		if(debug == 'Yes') s.log(logLevel, "aws version response: "+awsVersionResponse);
-		if(!awsVersionResponse){
-			s.log(3, "AWS CLI does not appear to be installed");
-			return false;
+		cmd = "aws --version";
+		Process.execute(cmd);
+		var awsVersionError = Process.stderr;
+		if(debug == 'Yes') s.log(logLevel, "aws version error: "+awsVersionError);
+		if(!awsVersionError){
+			// Try with explicit Python
+			Process.execute(addPython(cmd, true));
+			awsVersionError = Process.stderr;
+			awsVersionResponse = Process.stdout;
+			if(debug == 'Yes'){
+				s.log(logLevel, "aws version response: "+awsVersionResponse);
+				s.log(logLevel, "aws version error: "+awsVersionError);
+			}
+			if(!awsVersionError){
+				s.log(3, "AWS CLI does not appear to be installed");
+				return false;
+			} else {
+				// Set that explicit Python needed
+				requireExplicitPython = true;
+				return true;
+			}
 		} else {
 			return true;
 		}
@@ -51,7 +80,7 @@ function jobArrived( s : Switch, job : Job )
 	// Function to see if an S3 bucket exists and is accessible
 	var verifyS3Bucket = function(bucketName)
 	{
-		Process.execute("aws s3api head-bucket --bucket "+bucketName);
+		Process.execute(addPython("aws s3api head-bucket --bucket "+bucketName, requireExplicitPython));
 		var awsHeadBucketResponse = Process.stderr;
 		if(awsHeadBucketResponse){
 			s.log(3, awsHeadBucketResponse);
@@ -76,7 +105,8 @@ function jobArrived( s : Switch, job : Job )
 	// Function to upload an object to an S3 bucket
 	var putS3Object = function (bucketName)
 	{
-		Process.execute(addOptionalParameters("aws s3api put-object --output json --bucket "+bucketName+" --body "+job.getPath()+" --key "+job.getName()));
+		cmd = addOptionalParameters(addPython("aws s3api put-object --output json --bucket "+bucketName+" --body \""+job.getPath()+"\" --key \""+job.getName()+"\"", requireExplicitPython));
+		Process.execute(cmd);
 		var putResponse = Process.stdout;	
 		var putError = Process.stderr;
 		var objectUrl = null;
