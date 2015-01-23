@@ -27,82 +27,114 @@ function timerFired( s : Switch )
 		s.log(logLevel, "leaveOriginals: "+leaveOriginals);
 	}
 	
-	
-			
 	// Function for adding optional params
 	var addOptionalParameters = function(cmd){
 		if(region) 			cmd += " --region "+region;
 		if(namedProfile) 		cmd += " --profile "+namedProfile;	
 		// Booleans
-		
 		return cmd;
 	}
-	
 		
-	// List objects base command
-	var lsCmd = "aws s3api list-objects --bucket "+targetBucket+" --output json";
-	
-	// Add optional parameters
-	lsCmd = addOptionalParameters(lsCmd);
-	
-	// Invoke AWS CLI
-	Process.execute(lsCmd);
-	var listObjectsResponse = Process.stdout;
-	
-	// Evaluate response
-	var parsedObject = eval("(" + listObjectsResponse + ")");
-	var objects = parsedObject.Contents;
-	
-	// Check to see if any objects exist
-	if(objects.length > 0){
-			
-		// Log some stuff
-		if(debug == "Yes"){
-			s.log(logLevel, "list-objects output: "+ listObjectsResponse);
-			s.log(logLevel, "num of objects found: "+ objects.length);
+	// Function to see if AWS CLI is installed
+	var verifyAwsCli = function()
+	{
+		Process.execute("aws --version");
+		var awsVersionResponse = Process.stderr;
+		if(debug == 'Yes') s.log(logLevel, "aws version response: "+awsVersionResponse);
+		if(!awsVersionResponse){
+			s.log(3, "AWS CLI does not appear to be installed");
+			return false;
+		} else {
+			return true;
 		}
-		
-		// Loop through objects, download, and make new Switch jobs
-		for(var i = 0; i < objects.length; i++){
-			var key = objects[i].Key;
+	}
+	
+	// Function to see if an S3 bucket exists and is accessible
+	var verifyS3Bucket = function(bucketName)
+	{
+		Process.execute("aws s3api head-bucket --bucket "+bucketName);
+		var awsHeadBucketResponse = Process.stderr;
+		if(awsHeadBucketResponse){
+			s.log(3, awsHeadBucketResponse);
+			return false;
+		} else {
+			if(debug == 'Yes') s.log(logLevel, "Bucket '"+bucketName+"' exists and is available to you.");
+			return true;
+		}
+	}
+	
+	// Function to list all objects in an S3 bucket
+	var listS3Objects = function(bucketName)
+	{
+		// Get list of S3 objects
+		Process.execute(addOptionalParameters("aws s3api list-objects --bucket "+targetBucket+" --output json"));
+		var listObjectsResponse = Process.stdout;
+		// Evaluate response
+		var parsedObject = eval("(" + listObjectsResponse + ")");
+		var objects = parsedObject.Contents;
+		// Return
+		return objects;
+	}
+	
+	// Function to get objects
+	var getS3Objects = function(inputObjects)
+	{
+		var i = null;
+		for(i = 0; i < inputObjects.length; i++){
+			key = inputObjects[i].Key;
 			
 			// Log some stuff
 			if(debug == "Yes") s.log(logLevel, "Key: "+key);
 			
 			// Create a new job container
-			var job = s.createNewJob("s3://"+targetBucket+"/"+key);
-			
-			// Download into new job container, base command
-			var dlCmd = "aws s3 cp s3://"+targetBucket+"/"+key+" "+job.getPath()+"/"+key+" --only-show-errors ";
-			
-			// Add optional parameters
-			dlCmd = addOptionalParameters(dlCmd);
+			job = s.createNewJob(targetBucket+"_"+key);
+			fn = job.createPathWithName(key, false);
 			
 			// Invoke AWS CLI
-			Process.execute(dlCmd);
-			var downloadError = Process.stdout;
+			Process.execute(addOptionalParameters("aws s3api get-object --bucket "+targetBucket+" --key "+key+" "+fn+" --output json"));
+			downloadError = Process.stderr;
 			
 			// Evaluate response
 			if(downloadError){
 				s.log(3, "AWS CLI S3 download error: "+downloadError);
 			} else {
-							
-				// Create a new file
-				//var f = new File(job.getPath()+"/"+key);
-				//job.createPathWithExtension(job.getPath()+"/"+key);
-
-				
-				// Complete job
-				job.sendToSingle(job.getPath());
-					
 				// Log some stuff
 				if(debug == "Yes") s.log(logLevel, "Object successfully downloaded : "+key);
+				// Complete job
+            	job.sendToSingle(fn);
+				// Delete object
+				if(leaveOriginals == 'No'){
+					// Invoke
+					Process.execute(addOptionalParameters("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json"));
+					deleteError = Process.stderr;
+					deleteResponse = Process.stdout;
+					// Log some stuff
+					if(debug == "Yes") s.log(logLevel, "deleteResponse : "+deleteResponse);
+					// Check for errors
+					if(deleteError){
+						s.log(3, "AWS CLI S3 delete error: "+deleteError);
+					} else {
+						if(debug == "Yes") s.log(logLevel, "File successfully removed from S3.");
+					}
+				}
 			}
-
 		}
-	
-	} else {
-		s.log(1, "The bucket '"+targetBucket+"' is empty.");
 	}
-	
+		
+	// Ensure AWS CLI is installed
+	if(verifyAwsCli()){
+		
+		// Verify S3 bucket
+		if(verifyS3Bucket(targetBucket)){
+			// List objects
+			var objects = listS3Objects(targetBucket);
+			// Check to see if any objects exist
+			if(objects.length > 0){
+				// Log some stuff
+				if(debug == "Yes")s.log(logLevel, "num of objects found: "+ objects.length);
+				// Get all objects
+				getS3Objects(objects);
+			}
+		}
+	}
 }
