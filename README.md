@@ -7,6 +7,7 @@ AWS scripts for Switch with the help of AWS CLI. The goal of this project is to 
 
 ### Available Scripts
 - S3 Upload
+- S3 Download
 - SQS Send
 
 #### Todo
