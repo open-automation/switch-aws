@@ -27,6 +27,7 @@
         <ObsoleteProperties Type="string" Editor="hide"/>
         <ObsoleteConnectionProperties Type="string" Editor="hide"/>
         <targetBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></targetBucket>
+        <prefix Validation="None" LocalizedTagName="Prefix" Subtype="inline" Default="" Tooltip="Filters the watched objects to keys that begin with the specified prefix (S3 directories)." DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></prefix>
         <namedProfile Validation="None" LocalizedTagName="Named Profile" Subtype="inline" Default="" Tooltip="Specify another profile key for using AWS credentials other than the default user" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></namedProfile>
         <region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">us-east-1</region>
         <leaveOriginals Validation="Standard" LocalizedTagName="Leave originals in bucket" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</leaveOriginals>

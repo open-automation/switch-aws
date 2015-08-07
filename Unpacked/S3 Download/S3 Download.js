@@ -6,6 +6,7 @@ function timerFired( s : Switch )
 	var leaveOriginals = s.getPropertyValue("leaveOriginals");
 	var region = s.getPropertyValue('region');
 	var namedProfile = s.getPropertyValue('namedProfile');	
+	var prefix = s.getPropertyValue('prefix');	
 	
 	var debug = s.getPropertyValue("debug");
 	
@@ -31,6 +32,7 @@ function timerFired( s : Switch )
 	// Function for adding optional params
 	var addOptionalParameters = function(cmd){
 		if(region) 			cmd += " --region "+region;
+		if(prefix) 			cmd += " --prefix "+prefix;
 		if(namedProfile) 		cmd += " --profile "+namedProfile;	
 		// Booleans
 		return cmd;
