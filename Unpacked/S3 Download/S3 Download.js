@@ -28,12 +28,14 @@ function timerFired( s : Switch )
 		s.log(logLevel, "targetBucket: "+targetBucket);
 		s.log(logLevel, "leaveOriginals: "+leaveOriginals);
 	}
-	
+
 	// Function for adding optional params
-	var addOptionalParameters = function(cmd){
+	var addOptionalParameters = function(cmd, restrictTo){
 		if(region) 			cmd += " --region "+region;
-		if(prefix) 			cmd += " --prefix "+prefix;
 		if(namedProfile) 		cmd += " --profile "+namedProfile;	
+		if(prefix && restrictTo == 'list-objects'){
+								cmd += " --prefix "+prefix;
+		}
 		// Booleans
 		return cmd;
 	}
@@ -100,7 +102,9 @@ function timerFired( s : Switch )
 	var listS3Objects = function(bucketName)
 	{
 		// Get list of S3 objects
-		Process.execute(addOptionalParameters(addPython("aws s3api list-objects --bucket "+targetBucket+" --output json", requireExplicitPython)));
+		list_cmd = addOptionalParameters(addPython("aws s3api list-objects --bucket "+targetBucket+" --output json", requireExplicitPython), 'list-objects');
+		if(debug == "Yes") s.log(2, 'list_cmd: '+list_cmd);
+		Process.execute(list_cmd);
 		var listObjectsResponse = Process.stdout;
 		// Evaluate response
 		var parsedObject = eval("(" + listObjectsResponse + ")");
@@ -115,16 +119,22 @@ function timerFired( s : Switch )
 		var i = null;
 		for(i = 0; i < inputObjects.length; i++){
 			key = inputObjects[i].Key;
+			basename_key = key.replace(/^.*[\\\/]/, '');
 			
 			// Log some stuff
-			if(debug == "Yes") s.log(logLevel, "Key: "+key);
+			if(debug == "Yes"){
+				s.log(logLevel, "Key: "+key);
+				s.log(logLevel, "Basename key: "+basename_key);
+			}
 			
 			// Create a new job container
 			job = s.createNewJob(targetBucket+"_"+key);
-			fn = job.createPathWithName(key, false);
+			fn = job.createPathWithName(basename_key, false);
 			
 			// Invoke AWS CLI
-			Process.execute(addOptionalParameters(addPython("aws s3api get-object --bucket "+targetBucket+" --key "+key+" \""+fn+"\" --output json", requireExplicitPython)));
+			download_cmd = addOptionalParameters(addPython("aws s3api get-object --bucket "+targetBucket+" --key "+key+" \""+fn+"\" --output json", requireExplicitPython), 'No');
+			if(debug == "Yes") s.log(2, 'download_cmd: '+download_cmd);
+			Process.execute(download_cmd);
 			downloadError = Process.stderr;
 			
 			// Evaluate response
@@ -138,7 +148,9 @@ function timerFired( s : Switch )
 				// Delete object
 				if(leaveOriginals == 'No'){
 					// Invoke
-					Process.execute(addOptionalParameters(addPython("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json", requireExplicitPython)));
+					delete_cmd = addOptionalParameters(addPython("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json", requireExplicitPython), 'No');
+					if(debug == "Yes") s.log(2, 'delete_cmd: '+delete_cmd);
+					Process.execute(delete_cmd);
 					deleteError = Process.stderr;
 					deleteResponse = Process.stdout;
 					// Log some stuff
