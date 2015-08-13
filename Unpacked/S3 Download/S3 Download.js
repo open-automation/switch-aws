@@ -7,14 +7,12 @@ function timerFired( s : Switch )
 	var region = s.getPropertyValue('region');
 	var namedProfile = s.getPropertyValue('namedProfile');	
 	var prefix = s.getPropertyValue('prefix');	
+	var CliPathPrefix = s.getPropertyValue('CliPathPrefix');	
 	
 	var debug = s.getPropertyValue("debug");
 	
 	// Set the log level
 	var logLevel = 2;
-	
-	// Keep track of if Python needed to be called explicitely
-	var requireExplicitPython = false;
 	
 	// Set the timerInterval on start
 	if (s.getTimerInterval() == 0){
@@ -41,20 +39,16 @@ function timerFired( s : Switch )
 	}
 	
 	// Function for explicitly calling Python
-	var addPython = function(cmd, requireExplicitPython)
+	var addCliPathPrefix = function(cmd, CliPathPrefix)
 	{
-		if(requireExplicitPython){
-			fixedCmd = 'python /usr/local/bin/'+cmd;
-			return fixedCmd;
-		} else {
-			return cmd;		
-		}
+		fixedCmd = CliPathPrefix + cmd;
+		return fixedCmd;
 	}
 		
 	// Function to see if AWS CLI is installed
 	var verifyAwsCli = function()
 	{
-		cmd = "aws --version";
+		cmd = addCliPathPrefix("aws --version", CliPathPrefix);
 		Process.execute(cmd);
 		var awsVersionError = Process.stderr;
 		var awsVersionResponse = Process.stdout;
@@ -63,22 +57,8 @@ function timerFired( s : Switch )
 			s.log(logLevel, "aws version error: "+awsVersionError);
 		}
 		if(!awsVersionError){
-			// Try with explicit Python
-			Process.execute(addPython(cmd, true));
-			awsVersionError = Process.stderr;
-			awsVersionResponse = Process.stdout;
-			if(debug == 'Yes'){
-				s.log(logLevel, "aws version response: "+awsVersionResponse);
-				s.log(logLevel, "aws version error: "+awsVersionError);
-			}
-			if(!awsVersionError){
-				s.log(3, "AWS CLI does not appear to be installed");
-				return false;
-			} else {
-				// Set that explicit Python needed
-				requireExplicitPython = true;
-				return true;
-			}
+			s.log(3, "AWS CLI does not appear to be installed!");
+			s.log(3, "You may have to set (or unset) the CLI Path Prefix element property so Switch may execute 'aws' commands.");
 		} else {
 			return true;
 		}
@@ -87,7 +67,7 @@ function timerFired( s : Switch )
 	// Function to see if an S3 bucket exists and is accessible
 	var verifyS3Bucket = function(bucketName)
 	{
-		Process.execute(addPython("aws s3api head-bucket --bucket "+bucketName, requireExplicitPython));
+		Process.execute(addCliPathPrefix("aws s3api head-bucket --bucket "+bucketName, CliPathPrefix));
 		var awsHeadBucketResponse = Process.stderr;
 		if(awsHeadBucketResponse){
 			s.log(3, awsHeadBucketResponse);
@@ -102,7 +82,7 @@ function timerFired( s : Switch )
 	var listS3Objects = function(bucketName)
 	{
 		// Get list of S3 objects
-		list_cmd = addOptionalParameters(addPython("aws s3api list-objects --bucket "+targetBucket+" --output json", requireExplicitPython), 'list-objects');
+		list_cmd = addOptionalParameters(addCliPathPrefix("aws s3api list-objects --bucket "+targetBucket+" --output json", CliPathPrefix), 'list-objects');
 		if(debug == "Yes") s.log(2, 'list_cmd: '+list_cmd);
 		Process.execute(list_cmd);
 		var listObjectsResponse = Process.stdout;
@@ -132,7 +112,7 @@ function timerFired( s : Switch )
 			fn = job.createPathWithName(basename_key, false);
 			
 			// Invoke AWS CLI
-			download_cmd = addOptionalParameters(addPython("aws s3api get-object --bucket "+targetBucket+" --key "+key+" \""+fn+"\" --output json", requireExplicitPython), 'No');
+			download_cmd = addOptionalParameters(addCliPathPrefix("aws s3api get-object --bucket "+targetBucket+" --key "+key+" \""+fn+"\" --output json", CliPathPrefix), 'No');
 			if(debug == "Yes") s.log(2, 'download_cmd: '+download_cmd);
 			Process.execute(download_cmd);
 			downloadError = Process.stderr;
@@ -148,7 +128,7 @@ function timerFired( s : Switch )
 				// Delete object
 				if(leaveOriginals == 'No'){
 					// Invoke
-					delete_cmd = addOptionalParameters(addPython("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json", requireExplicitPython), 'No');
+					delete_cmd = addOptionalParameters(addCliPathPrefix("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json", CliPathPrefix), 'No');
 					if(debug == "Yes") s.log(2, 'delete_cmd: '+delete_cmd);
 					Process.execute(delete_cmd);
 					deleteError = Process.stderr;

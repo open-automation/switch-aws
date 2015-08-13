@@ -32,6 +32,7 @@
         <region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">us-east-1</region>
         <leaveOriginals Validation="Standard" LocalizedTagName="Leave originals in bucket" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</leaveOriginals>
         <checkIntervalMinutes Validation="Standard" LocalizedTagName="Check every (minutes)" Subtype="inline" Default="" Tooltip="" DetailedInfo="" Type="number" Editor="inline;sltextwithvar"></checkIntervalMinutes>
+        <CliPathPrefix Validation="None" LocalizedTagName="CLI Path Prefix" Subtype="inline" Default="python /usr/local/bin/" Tooltip="Runtimes that use Python (like OSX) need to prefix 'aws' commands when executing from Switch scripts. For most OSX users, this means setting this property to: &quot;python /usr/local/bin/&quot;. For Windows users, it likely means leaving this property blank." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">python /usr/local/bin/</CliPathPrefix>
         <debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</debug>
     </ElementFields>
     <ConnectionFields/>
