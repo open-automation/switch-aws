@@ -2,24 +2,24 @@ function jobArrived( s : Switch, job : Job )
 {
 	// Get flow element properties
 	var destinationBucket = s.getPropertyValue('DestinationBucket');
+	var destinationKey = s.getPropertyValue('DestinationKey');
 	var responseUrlPdKey = s.getPropertyValue('ResponseUrlPdKey');
 	var region = s.getPropertyValue('Region');
 	var namedProfile = s.getPropertyValue('NamedProfile');
 	var acl = s.getPropertyValue('ACL');
 	var storageClass = s.getPropertyValue('StorageClass');
 	var removeSwitchId = s.getPropertyValue('RemoveSwitchId');
+	var CliPathPrefix = s.getPropertyValue('CliPathPrefix');	
 	
 	var debug = s.getPropertyValue('Debug');
 	
 	// Set the log level
 	var logLevel = 2;
 	
-	// Keep track of if Python needed to be called explicitely
-	var requireExplicitPython = false;
-	
 	// Log some stuff
 	if(debug == 'Yes'){
 		s.log(logLevel, "destinationBucket: "+destinationBucket);
+		s.log(logLevel, "destinationKey: "+destinationKey);
 		s.log(logLevel, "responseUrlPdKey: "+responseUrlPdKey);
 		s.log(logLevel, "region: "+region);
 		s.log(logLevel, "filePath: "+job.getPath());
@@ -38,40 +38,26 @@ function jobArrived( s : Switch, job : Job )
 	}
 		
 	// Function for explicitly calling Python
-	var addPython = function(cmd, requireExplicitPython)
+	var addCliPathPrefix = function(cmd, CliPathPrefix)
 	{
-		if(requireExplicitPython){
-			fixedCmd = 'python /usr/local/bin/'+cmd;
-			return fixedCmd;
-		} else {
-			return cmd;		
-		}
+		fixedCmd = CliPathPrefix + cmd;
+		return fixedCmd;
 	}
 	
 	// Function to see if AWS CLI is installed
 	var verifyAwsCli = function()
 	{
-		cmd = "aws --version";
+		cmd = addCliPathPrefix("aws --version", CliPathPrefix);
 		Process.execute(cmd);
 		var awsVersionError = Process.stderr;
-		if(debug == 'Yes') s.log(logLevel, "aws version error: "+awsVersionError);
+		var awsVersionResponse = Process.stdout;
+		if(debug == 'Yes'){
+			s.log(logLevel, "aws version response: "+awsVersionResponse);
+			s.log(logLevel, "aws version error: "+awsVersionError);
+		}
 		if(!awsVersionError){
-			// Try with explicit Python
-			Process.execute(addPython(cmd, true));
-			awsVersionError = Process.stderr;
-			awsVersionResponse = Process.stdout;
-			if(debug == 'Yes'){
-				s.log(logLevel, "aws version response: "+awsVersionResponse);
-				s.log(logLevel, "aws version error: "+awsVersionError);
-			}
-			if(!awsVersionError){
-				s.log(3, "AWS CLI does not appear to be installed");
-				return false;
-			} else {
-				// Set that explicit Python needed
-				requireExplicitPython = true;
-				return true;
-			}
+			s.log(3, "AWS CLI does not appear to be installed!");
+			s.log(3, "You may have to set (or unset) the CLI Path Prefix element property so Switch may execute 'aws' commands.");
 		} else {
 			return true;
 		}
@@ -80,7 +66,7 @@ function jobArrived( s : Switch, job : Job )
 	// Function to see if an S3 bucket exists and is accessible
 	var verifyS3Bucket = function(bucketName)
 	{
-		Process.execute(addPython("aws s3api head-bucket --bucket "+bucketName, requireExplicitPython));
+		Process.execute(addCliPathPrefix("aws s3api head-bucket --bucket "+bucketName, CliPathPrefix));
 		var awsHeadBucketResponse = Process.stderr;
 		if(awsHeadBucketResponse){
 			s.log(3, awsHeadBucketResponse);
@@ -105,7 +91,8 @@ function jobArrived( s : Switch, job : Job )
 	// Function to upload an object to an S3 bucket
 	var putS3Object = function (bucketName)
 	{
-		cmd = addOptionalParameters(addPython("aws s3api put-object --output json --bucket "+bucketName+" --body \""+job.getPath()+"\" --key \""+job.getName()+"\"", requireExplicitPython));
+		cmd = addOptionalParameters(addCliPathPrefix("aws s3api put-object --output json --bucket "+bucketName+" --body \""+job.getPath()+"\" --key \""+destinationKey+"\"", CliPathPrefix));
+		if(debug == 'Yes') s.log(logLevel, "put-object cmd: "+cmd);	
 		Process.execute(cmd);
 		var putResponse = Process.stdout;	
 		var putError = Process.stderr;
@@ -115,7 +102,7 @@ function jobArrived( s : Switch, job : Job )
 			return null;
 		} else {
 			if(debug == 'Yes') s.log(logLevel, "putResponse: "+putResponse);	
-			objectUrl = 'https://s3.amazonaws.com/'+bucketName+'/'+job.getName();
+			objectUrl = 'https://'+bucketName+'.s3.amazonaws.com/'+destinationKey;
 			return objectUrl;
 		}
 	}

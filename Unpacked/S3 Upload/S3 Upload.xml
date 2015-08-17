@@ -26,6 +26,7 @@
         <SwitchModule Type="string" Editor="hide"/>
         <ObsoleteProperties Type="string" Editor="hide"/>
         <ObsoleteConnectionProperties Type="string" Editor="hide"/>
+        <DestinationKey Validation="Standard" LocalizedTagName="Target Key" Subtype="sltextwithvar" Default="[Job.Name]" Tooltip="The uploaded file will be named this on S3. Include folders in this field seperated by '/' to indicate a subfolder destination within a bucket." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">[Job.Name]</DestinationKey>
         <RemoveSwitchId Validation="Standard" LocalizedTagName="Remove Switch ID" Subtype="inline" Default="Yes" Tooltip="Removes the 5 character Switch identifier" DetailedInfo="" Type="bool" Editor="inline">Yes</RemoveSwitchId>
         <Region Validation="Standard" LocalizedTagName="Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="enum:ap-northeast-1;ap-southeast-1;ap-southeast-2;eu-central-1;eu-west-1;sa-east-1;us-east-1;us-west-1;us-west-2" Editor="inline;sltextwithvar">us-east-1</Region>
         <DestinationBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></DestinationBucket>
@@ -33,6 +34,7 @@
         <NamedProfile Validation="None" LocalizedTagName="Named Profile" Subtype="inline" Default="" Tooltip="Specify another profile key for using AWS credentials other than the default user" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></NamedProfile>
         <ACL Validation="Standard" LocalizedTagName="ACL" Subtype="inline" Default="private" Tooltip="Sets the ACl for the object when the command is performed" DetailedInfo="" Type="enum:private;public-read;public-read-write;authenticated-read;bucket-owner-read;bucket-owner-full-control;log-delivery-write" Editor="inline;sltextwithvar">private</ACL>
         <StorageClass Validation="Standard" LocalizedTagName="Storage Class" Subtype="inline" Default="" Tooltip="The type of storage to use for the object." DetailedInfo="" Type="enum:STANDARD;REDUCED_REDUNDANCY" Editor="inline;sltextwithvar"></StorageClass>
+        <CliPathPrefix Validation="None" LocalizedTagName="CLI Path Prefix" Subtype="inline" Default="python /usr/local/bin/" Tooltip="Runtimes that use Python (like OSX) need to prefix 'aws' commands when executing from Switch scripts. For most OSX users, this means setting this property to: &quot;python /usr/local/bin/&quot;. For Windows users, it likely means leaving this property blank." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">python /usr/local/bin/</CliPathPrefix>
         <Debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</Debug>
     </ElementFields>
     <ConnectionFields>
