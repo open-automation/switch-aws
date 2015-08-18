@@ -1,6 +1,6 @@
 function jobArrived( s : Switch, job : Job )
 {
-	// Get flow element properties
+	// Get flow element properties 
 	var destinationBucket = s.getPropertyValue('DestinationBucket');
 	var destinationKey = s.getPropertyValue('DestinationKey');
 	var responseUrlPdKey = s.getPropertyValue('ResponseUrlPdKey');
