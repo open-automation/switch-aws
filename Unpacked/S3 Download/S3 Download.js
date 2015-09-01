@@ -103,7 +103,7 @@ function timerFired( s : Switch )
 			
 			// Check for empty object AWS sometimes returns to maintain the "folder" structure on the S3 console
 			if(key == prefix){
-				s.log(logLevel, "Empty 'folder' object found and ignored: "+key);
+				if(debug == "Yes"){ s.log(logLevel, "Empty 'folder' object found and ignored: "+key) };
 				continue;
 			};
 			
