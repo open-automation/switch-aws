@@ -118,7 +118,7 @@ function timerFired( s : Switch )
 			fn = job.createPathWithName(basename_key, false);
 			
 			// Invoke AWS CLI
-			download_cmd = addOptionalParameters(addCliPathPrefix("aws s3api get-object --bucket "+targetBucket+" --key "+key+" \""+fn+"\" --output json", CliPathPrefix), 'No');
+			download_cmd = addOptionalParameters(addCliPathPrefix("aws s3api get-object --bucket "+targetBucket+" --key \""+key+"\" \""+fn+"\" --output json", CliPathPrefix), 'No');
 			if(debug == "Yes") s.log(2, 'download_cmd: '+download_cmd);
 			Process.execute(download_cmd);
 			downloadError = Process.stderr;
@@ -134,7 +134,7 @@ function timerFired( s : Switch )
 				// Delete object
 				if(leaveOriginals == 'No'){
 					// Invoke
-					delete_cmd = addOptionalParameters(addCliPathPrefix("aws s3api delete-object --bucket "+targetBucket+" --key "+key+" --output json", CliPathPrefix), 'No');
+					delete_cmd = addOptionalParameters(addCliPathPrefix("aws s3api delete-object --bucket "+targetBucket+" --key \""+key+"\" --output json", CliPathPrefix), 'No');
 					if(debug == "Yes") s.log(2, 'delete_cmd: '+delete_cmd);
 					Process.execute(delete_cmd);
 					deleteError = Process.stderr;
