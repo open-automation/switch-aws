@@ -10,8 +10,9 @@ function jobArrived( s : Switch, job : Job )
 	var storageClass = s.getPropertyValue('StorageClass');
 	var removeSwitchId = s.getPropertyValue('RemoveSwitchId');
 	var CliPathPrefix = s.getPropertyValue('CliPathPrefix');	
+	var contentType = s.getPropertyValue('ContentType');	
 	
-	var debug = s.getPropertyValue('Debug');
+	var debug = s.getPropertyValue('Debug');  
 	
 	// Set the log level
 	var logLevel = 2;
@@ -80,7 +81,7 @@ function jobArrived( s : Switch, job : Job )
 	// Must be file, no folder
 	var verifyIsFile = function()
 	{
-		if(!job.isFile()){
+		if(job.isFolder()){
 			s.log(3, "Error! Job should be a file, not a folder.");
 			return false;
 		} else {
