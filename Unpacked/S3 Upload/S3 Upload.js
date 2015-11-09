@@ -12,7 +12,7 @@ function jobArrived( s : Switch, job : Job )
 	var CliPathPrefix = s.getPropertyValue('CliPathPrefix');	
 	var contentType = s.getPropertyValue('ContentType');	
 	
-	var debug = s.getPropertyValue('Debug');  
+	var debug = s.getPropertyValue('Debug');
 	
 	// Set the log level
 	var logLevel = 2;
