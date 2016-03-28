@@ -99,11 +99,10 @@ function timerFired( s : Switch )
 		var i = null;
 		for(i = 0; i < inputObjects.length; i++){
 			key = inputObjects[i].Key;
-			size = inputObjects[i].Size;
 			basename_key = key.replace(/^.*[\\\/]/, '');
 			
 			// Check for empty object AWS sometimes returns to maintain the "folder" structure on the S3 console
-			if(key == prefix || size === 0){
+			if(key == prefix){
 				if(debug == "Yes"){ s.log(logLevel, "Empty 'folder' object found and ignored: "+key) };
 				continue;
 			};
