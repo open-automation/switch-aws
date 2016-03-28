@@ -17,5 +17,9 @@ Watches an S3 bucket for new files. Once it finds a file, it downloads it and op
 
 Adds an SQS message into an SQS queue. The SQS message is declared in the configurator settings.
 
+### Example Flows
+#### S3 Send and Receive
+![S3 send and receive](http://i.imgur.com/0riwyVF.png "Send and receive screenshot")
+
 #### Todo
 See the [issues page](https://github.com/dominickp/SwitchAWS/issues)

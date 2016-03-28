@@ -10,6 +10,7 @@ function jobArrived( s : Switch, job : Job )
 	var storageClass = s.getPropertyValue('StorageClass');
 	var removeSwitchId = s.getPropertyValue('RemoveSwitchId');
 	var CliPathPrefix = s.getPropertyValue('CliPathPrefix');	
+	var contentType = s.getPropertyValue('ContentType');	
 	
 	var debug = s.getPropertyValue('Debug');
 	
@@ -26,6 +27,7 @@ function jobArrived( s : Switch, job : Job )
 		s.log(logLevel, "namedProfile: "+namedProfile);
 		s.log(logLevel, "acl: "+acl);
 		s.log(logLevel, "storageClass: "+storageClass);
+		s.log(logLevel, "contentType: "+contentType);
 	}
 		
 	// Function for adding optional params
@@ -33,6 +35,7 @@ function jobArrived( s : Switch, job : Job )
 		if(namedProfile) 		cmd += " --profile "+namedProfile;	
 		if(acl) 				cmd += " --acl "+acl;
 		if(storageClass) 		cmd += " --storage-class "+storageClass;
+		if(contentType) 		cmd += " --content-type "+contentType;
 		// Booleans
 		return cmd;
 	}
@@ -80,7 +83,7 @@ function jobArrived( s : Switch, job : Job )
 	// Must be file, no folder
 	var verifyIsFile = function()
 	{
-		if(!job.isFile()){
+		if(job.isFolder()){
 			s.log(3, "Error! Job should be a file, not a folder.");
 			return false;
 		} else {
