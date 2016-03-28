@@ -1,12 +1,1 @@
-<Manifest>
-    <ScripterInstanceName>S3 Download</ScripterInstanceName>
-    <ScriptPackageFormatVersion>1.0</ScriptPackageFormatVersion>
-    <ScripterPassword></ScripterPassword>
-    <ScriptDeclarationFile>S3 Download.xml</ScriptDeclarationFile>
-    <ScriptProgramFiles>
-        <ScriptProgramFile ScriptLanguage="JavaScript">S3 Download.js</ScriptProgramFile>
-    </ScriptProgramFiles>
-    <ScriptIconFile>s3_icon.png</ScriptIconFile>
-    <AppleBinary></AppleBinary>
-    <LocalizationItems/>
-</Manifest>
+Np1nOpSSAecGwZyX6nbV1IIAS3VIczlsUvGpVhi7xC4cwpoEG8YmuxRiw9HJNqLJtoB8dqPacxvi82tGOk4pIucXZi6ZRlWy2axC4Ov4Av7yEl7LuHq33G9UFJ0dX25F8+aCjV3cOm6+ctwdspqjzUcJaUrllvRCrGBDqYb0o1i93CmnQjrbENfMUjdisuykmdLazn9qWkqEznHR+fulrsqh+oY08JQHOp9aj/ZKOAV//vlKTjSGeTBQueiGopaL2qzVHCk2rkB179nQLPEq6AnrJOqtBdkItiNm/wx7yEAgs3ZNxKKNbC6hDJ+3mL7MJTHCJDM0lG8BUJaSxDj3FWo7tgCh5tnf+x1A/RiJNzuTR4MkpBhb0FKlNjSI3Rcmc7VNP/My7h52TJZcM/lBbseyyZ+GIGnE2Hjvf/4hXRfHvb8grESB8p7eqWrZFa1piDABIXmkcYjrBXZBauNsGon6ar24ikAuvlZY6ykmZ+8DbyKQJ25F6IsFz3ckp8rpcCWE0dDapRHm2kN/LpTHGG0bxz68yDiGinlzktw1SJDHYrVMx0GHJ2CfPJ6i0QzHd+kVAvy2kWsybNUDbHlHkjuVXkL137C1HE4eenJXUa+qVaD5VnLS5leTb8ZRlG9y67WZDrz79H1pIN6lxKEJV29a4V1uqLUuiCEHlUWTuer6lw9s0EpSXjOlagfyzav5NQy2GS1oOnoIpL9On9WFfIJyXMSG6PnlzODxnv9oQb5r1MIGbvAySsLFQ0xos+Jn
