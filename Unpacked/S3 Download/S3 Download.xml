@@ -26,13 +26,13 @@
         <SwitchModule Type="string" Editor="hide"/>
         <ObsoleteProperties Type="string" Editor="hide"/>
         <ObsoleteConnectionProperties Type="string" Editor="hide"/>
-        <targetBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></targetBucket>
-        <prefix Validation="None" LocalizedTagName="Prefix" Subtype="inline" Default="" Tooltip="Filters the watched objects to keys that begin with the specified prefix (S3 directories)." DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></prefix>
-        <namedProfile Validation="None" LocalizedTagName="Named Profile" Subtype="inline" Default="" Tooltip="Specify another profile key for using AWS credentials other than the default user" DetailedInfo="" Type="string" Editor="inline;sltextwithvar"></namedProfile>
-        <region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="us-east-1" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar">us-east-1</region>
+        <targetBucket Validation="Standard" LocalizedTagName="Target Bucket" Subtype="inline" Default="" Tooltip="Destination bucket key" DetailedInfo="" Type="string" Editor="inline;sltextwithvar;scriptexp"></targetBucket>
+        <prefix Validation="None" LocalizedTagName="Prefix" Subtype="inline" Default="" Tooltip="Filters the watched objects to keys that begin with the specified prefix (S3 directories)." DetailedInfo="" Type="string" Editor="inline;sltextwithvar;scriptexp"></prefix>
+        <namedProfile Validation="None" LocalizedTagName="Named Profile" Subtype="inline" Default="" Tooltip="Specify another profile key for using AWS credentials other than the default user" DetailedInfo="" Type="string" Editor="inline;sltextwithvar;scriptexp"></namedProfile>
+        <region Validation="Standard" LocalizedTagName="AWS Region" Subtype="inline" Default="" Tooltip="" DetailedInfo="" Type="string" Editor="inline;sltextwithvar;scriptexp"></region>
         <leaveOriginals Validation="Standard" LocalizedTagName="Leave originals in bucket" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</leaveOriginals>
-        <checkIntervalMinutes Validation="Standard" LocalizedTagName="Check every (minutes)" Subtype="inline" Default="" Tooltip="" DetailedInfo="" Type="number" Editor="inline;sltextwithvar"></checkIntervalMinutes>
-        <CliPathPrefix Validation="None" LocalizedTagName="CLI Path Prefix" Subtype="inline" Default="python /usr/local/bin/" Tooltip="Runtimes that use Python (like OSX) need to prefix 'aws' commands when executing from Switch scripts. For most OSX users, this means setting this property to: &quot;python /usr/local/bin/&quot;. For Windows users, it likely means leaving this property blank." DetailedInfo="" Type="string" Editor="inline;sltextwithvar">python /usr/local/bin/</CliPathPrefix>
+        <checkIntervalMinutes Validation="Standard" LocalizedTagName="Check every (minutes)" Subtype="inline" Default="" Tooltip="" DetailedInfo="" Type="number" Editor="inline;sltextwithvar;scriptexp"></checkIntervalMinutes>
+        <CliPathPrefix Validation="None" LocalizedTagName="CLI Path Prefix" Subtype="inline" Default="" Tooltip="Runtimes that use Python (like OSX) need to prefix 'aws' commands when executing from Switch scripts. For most OSX users, this means setting this property to: &quot;python /usr/local/bin/&quot;. For Windows users, it likely means leaving this property blank." DetailedInfo="" Type="string" Editor="inline;sltextwithvar;scriptexp"></CliPathPrefix>
         <debug Validation="Standard" LocalizedTagName="Debug" Subtype="inline" Default="No" Tooltip="" DetailedInfo="" Type="bool" Editor="inline">No</debug>
     </ElementFields>
     <ConnectionFields/>
