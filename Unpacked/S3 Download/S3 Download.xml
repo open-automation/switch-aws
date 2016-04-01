@@ -3,7 +3,7 @@
     <ElementFields>
         <Name Type="string" Editor="hide">S3Download</Name>
         <DisplayName Type="string" Editor="hide">AWS S3 Download</DisplayName>
-        <Version Type="number" Editor="hide">2</Version>
+        <Version Type="number" Editor="hide">3</Version>
         <Keywords Type="string" Editor="hide"/>
         <Tooltip Type="string" Editor="hide"/>
         <IncomingConnections Editor="hide">No</IncomingConnections>
