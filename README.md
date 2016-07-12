@@ -14,8 +14,10 @@ Upload a file into an S3 bucket or a bucket's sub-folder (key prefix). The goal 
 Watches an S3 bucket for new files. Once it finds a file, it downloads it and optionally removes the original from the S3 bucket. You also may choose to watch an entire S3 bucket or a sub-folder (key prefix) within one. The goal of this script is to be a drop-in replacement for the FTP receive element.
 
 #### SQS Send
-
 Adds an SQS message into an SQS queue. The SQS message is declared in the configurator settings.
+
+#### SES Send
+A drop-in replacement for Switch's "Mail send" configurator that uses AWS SES. Send plain-text or HTML emails which can be entered into the configurator or loaded from an external template file.
 
 ### Example Flows
 #### S3 Send and Receive
