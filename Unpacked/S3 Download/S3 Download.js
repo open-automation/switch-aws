@@ -118,6 +118,21 @@ function timerFired( s : Switch )
 			job = s.createNewJob(targetBucket+"_"+key);
 			fn = job.createPathWithName(basename_key, false);
 
+			// Get object metadata for private data writing
+			head_object_cmd = addOptionalParameters(addCliPathPrefix("aws s3api head-object --bucket "+targetBucket+" --key \""+key+"\" --output json", CliPathPrefix), 'No');
+			if(debug == "Yes") s.log(2, 'head_object_cmd: '+head_object_cmd);
+			Process.execute(head_object_cmd);
+			awsHeadBucketResponse = Process.stdout;
+			if(debug == "Yes") s.log(2, 'awsHeadBucketResponse: ' + awsHeadBucketResponse);
+			parsedHeadObject = eval("(" + awsHeadBucketResponse + ")");
+			metadata = parsedHeadObject.Metadata;
+			if(debug == "Yes") s.log(2, 'metadata found: '+metadata.toString());
+
+			// Set privat data for each metadata found
+			for (prop in metadata) {
+			    job.setPrivateData("aws-metadata-" + prop, metadata[prop]);
+			}
+
 			// Invoke AWS CLI
 			download_cmd = addOptionalParameters(addCliPathPrefix("aws s3api get-object --bucket "+targetBucket+" --key \""+key+"\" \""+fn+"\" --output json", CliPathPrefix), 'No');
 			if(debug == "Yes") s.log(2, 'download_cmd: '+download_cmd);
