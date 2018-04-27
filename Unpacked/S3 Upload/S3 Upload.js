@@ -9,8 +9,49 @@ function jobArrived( s : Switch, job : Job )
 	var acl = s.getPropertyValue('ACL');
 	var storageClass = s.getPropertyValue('StorageClass');
 	var removeSwitchId = s.getPropertyValue('RemoveSwitchId');
+	var CliCommand = s.getPropertyValue('CliCommand');
 	var CliPathPrefix = s.getPropertyValue('CliPathPrefix');	
 	var contentType = s.getPropertyValue('ContentType');	
+	if (contentType === "Automatic") {
+		var ext = job.getExtension();
+		switch (ext) {
+		case 'gif':
+			contentType = 'image/gif';
+			break;
+		case 'html':
+			contentType = 'text/html';
+			break;
+		case 'icc':
+			contentType = 'application/vnd.iccprofile';
+			break;
+		case 'jpg':
+			contentType = 'image/jpg';
+			break;
+		case 'otf':
+			contentType = 'application/x-font-otf';
+			break;
+		case 'pdf':
+			contentType = 'application/pdf';
+			break;
+		case 'png':
+			contentType = 'image/png';
+			break;
+		case 'psd':
+			contentType = 'image/vnd.adobe.photoshop';
+			break;
+		case 'tiff':
+			contentType = 'image/tiff';
+			break;
+		case 'ttf':
+			contentType = 'application/x-font-ttf';
+			break;
+		case 'xml':
+			contentType = 'application/xml';
+			break;
+		default:
+			contentType = '';
+		}
+	}
 	
 	var debug = s.getPropertyValue('Debug');
 	
@@ -43,22 +84,22 @@ function jobArrived( s : Switch, job : Job )
 	// Function for explicitly calling Python
 	var addCliPathPrefix = function(cmd, CliPathPrefix)
 	{
-		fixedCmd = CliPathPrefix + cmd;
+		fixedCmd = CliPathPrefix + '/' + CliCommand + " "+ cmd;
 		return fixedCmd;
 	}
 	
 	// Function to see if AWS CLI is installed
 	var verifyAwsCli = function()
 	{
-		cmd = addCliPathPrefix("aws --version", CliPathPrefix);
+		cmd = addCliPathPrefix("--version", CliPathPrefix);
 		Process.execute(cmd);
 		var awsVersionError = Process.stderr;
 		var awsVersionResponse = Process.stdout;
 		if(debug == 'Yes'){
-			s.log(logLevel, "aws version response: "+awsVersionResponse);
-			s.log(logLevel, "aws version error: "+awsVersionError);
+			s.log(logLevel, "version response: "+awsVersionResponse);
+			s.log(logLevel, "version error: "+awsVersionError);
 		}
-		if(!awsVersionError){
+		if(!awsVersionResponse){
 			s.log(3, "AWS CLI does not appear to be installed!");
 			s.log(3, "You may have to set (or unset) the CLI Path Prefix element property so Switch may execute 'aws' commands.");
 		} else {
@@ -69,7 +110,7 @@ function jobArrived( s : Switch, job : Job )
 	// Function to see if an S3 bucket exists and is accessible
 	var verifyS3Bucket = function(bucketName)
 	{
-		Process.execute(addCliPathPrefix("aws s3api head-bucket --bucket "+bucketName, CliPathPrefix));
+		Process.execute(addCliPathPrefix("s3api head-bucket --bucket "+bucketName, CliPathPrefix));
 		var awsHeadBucketResponse = Process.stderr;
 		if(awsHeadBucketResponse){
 			s.log(3, awsHeadBucketResponse);
@@ -94,7 +135,7 @@ function jobArrived( s : Switch, job : Job )
 	// Function to upload an object to an S3 bucket
 	var putS3Object = function (bucketName)
 	{
-		cmd = addOptionalParameters(addCliPathPrefix("aws s3api put-object --output json --bucket "+bucketName+" --body \""+job.getPath()+"\" --key \""+destinationKey+"\"", CliPathPrefix));
+		cmd = addOptionalParameters(addCliPathPrefix("s3api put-object --output json --bucket "+bucketName+" --body \""+job.getPath()+"\" --key \""+destinationKey+"\"", CliPathPrefix));
 		if(debug == 'Yes') s.log(logLevel, "put-object cmd: "+cmd);	
 		Process.execute(cmd);
 		var putResponse = Process.stdout;	
@@ -137,3 +178,4 @@ function jobArrived( s : Switch, job : Job )
 		}
 	}
 }
+
