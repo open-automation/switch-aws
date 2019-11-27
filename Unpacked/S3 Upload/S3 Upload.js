@@ -110,7 +110,7 @@ function jobArrived( s : Switch, job : Job )
 	// Function to see if an S3 bucket exists and is accessible
 	var verifyS3Bucket = function(bucketName)
 	{
-		Process.execute(addCliPathPrefix("s3api head-bucket --bucket "+bucketName, CliPathPrefix));
+		Process.execute(addOptionalParameters(addCliPathPrefix("s3api head-bucket --bucket "+bucketName, CliPathPrefix)));
 		var awsHeadBucketResponse = Process.stderr;
 		if(awsHeadBucketResponse){
 			s.log(3, awsHeadBucketResponse);
